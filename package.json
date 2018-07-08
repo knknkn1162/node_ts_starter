@@ -1,8 +1,8 @@
 {
   "scripts": {
     "build": "tsc -p .",
-    "exec": "node ./dist/index.js",
-    "bundle": "webpack",
+    "exec": "node ./dist/bundle.js",
+    "bundle": "yarn run webpack-cli",
     "test": "yarn run build && yarn run exec && yarn run clean",
     "watch": "tsc --watch",
     "clean": "rm -r ./dist && mkdir dist",
