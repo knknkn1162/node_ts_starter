@@ -18,9 +18,11 @@
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
+    "source-map-loader": "^0.2.3",
     "ts-loader": "^4.4.2",
     "tslint": "^5.10.0",
     "webpack": "^4.15.1",
-    "webpack-cli": "^3.0.8"
+    "webpack-cli": "^3.0.8",
+    "webpack-node-externals": "^1.7.2"
   }
 }
