@@ -2,6 +2,7 @@
   "scripts": {
     "build": "tsc -p .",
     "exec": "node ./dist/index.js",
+    "bundle": "webpack",
     "test": "yarn run build && yarn run exec && yarn run clean",
     "watch": "tsc --watch",
     "clean": "rm -r ./dist && mkdir dist",
@@ -9,13 +10,17 @@
     "lint": "tslint --format stylish './src/**/*.ts{,x}'"
   },
   "dependencies": {
-    "@types/node": "^10.5.2"
+    "@types/node": "^10.5.2",
+    "typescript": "^2.9.2"
   },
   "name": "mido",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
-    "tslint": "^5.10.0"
+    "ts-loader": "^4.4.2",
+    "tslint": "^5.10.0",
+    "webpack": "^4.15.1",
+    "webpack-cli": "^3.0.8"
   }
 }
