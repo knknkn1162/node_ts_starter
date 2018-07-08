@@ -14,5 +14,5 @@ tslint --init # create tslint.json
 ```
 # see https://www.youtube.com/watch?v=8TiZdePyduI
 yarn run bundle
-node
+node ./dist/bundle # or yarn run exec
 ```
