@@ -12,6 +12,7 @@ tslint --init # create tslint.json
 ```
 
 ```
-# see scripts.test in package.json
-yarn run test
+# see https://www.youtube.com/watch?v=8TiZdePyduI
+yarn run bundle
+node
 ```
