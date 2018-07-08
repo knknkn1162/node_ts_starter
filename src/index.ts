@@ -1,12 +1,19 @@
-import {ServerAPI} from './serverModule';
- 
-class Main {
-  constructor() {
-    // serverModuleの中のServerAPIクラスのインスタンスを作成
-    const serverAPI = new ServerAPI();
-    // ServerAPIの関数を実行
-    serverAPI.initServer();
-  }
+class Student {
+    fullName: string;
+    constructor(public firstName: string, public middleInitial: string, public lastName: string) {
+        this.fullName = firstName + " " + middleInitial + " " + lastName;
+    }
 }
- 
-const main = new Main();
+
+interface Person {
+    firstName: string;
+    lastName: string;
+}
+
+function greeter(person : Person) {
+    return "Hello, " + person.firstName + " " + person.lastName;
+}
+
+let user = new Student("Jane", "M.", "User");
+
+document.body.innerHTML = greeter(user);
