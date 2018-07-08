@@ -1,20 +1,11 @@
-import * as http from "http";
+import {ServerAPI} from "./serverModule";
 
 class Main {
-    constructor() {
-        // httpサーバーを設定する
-        const server: http.Server = http.createServer(
-            (request: http.IncomingMessage, response: http.ServerResponse) =>
-                this.requestHandler(request, response));
-        // サーバーを起動してリクエストを待ち受け状態にする
-        server.listen("5000");
-  }
-  /*
-  * サーバーにリクエストがあった時に実行される関数
-  */
-  private requestHandler(request: http.IncomingMessage,
-                         response: http.ServerResponse): void {
-    response.end("Hello! Node.js with TypeScript");
+  constructor() {
+    // serverModuleの中のServerAPIクラスのインスタンスを作成
+    const serverAPI = new ServerAPI();
+    // ServerAPIの関数を実行
+    serverAPI.initServer();
   }
 }
 
