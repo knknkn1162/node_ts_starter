@@ -3,7 +3,7 @@
     "build": "tsc -p .",
     "exec": "node ./dist/bundle.js",
     "bundle": "yarn run webpack-cli",
-    "test": "yarn run bundle && yarn run exec && yarn run clean",
+    "test": "yarn run clean && yarn run bundle && yarn run exec",
     "watch": "tsc --watch",
     "clean": "rm -r ./dist && mkdir dist",
     "fix": "tslint --fix './src/**/*.ts{,x}'",
