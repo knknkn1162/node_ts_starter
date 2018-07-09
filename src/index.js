@@ -2,8 +2,10 @@ const net = require('net');
 const HTTPParser = process.binding("http_parser").HTTPParser;
 const Stream = require('stream').Stream;
 const urlParse = require('url').parse;
-var METHODS = ["DELETE", "GET", "HEAD", "POST", "PUT", "CONNECT", "OPTIONS", "TRACE"];
-var STATUS_CODES = {
+
+// constants
+const METHODS = ["DELETE", "GET", "HEAD", "POST", "PUT", "CONNECT", "OPTIONS", "TRACE"];
+const STATUS_CODES = {
   '100': 'Continue',
   '101': 'Switching Protocols',
   '102': 'Processing',                 // RFC 2518, obsoleted by RFC 4918
