@@ -126,14 +126,14 @@ function createServer(app) {
         console.log("kOnBody");
         console.log("buffer: " + buf.slice(start, start+len).toString());
         req.body = buf.slice(start, start+len);
-        app(req, res);
       };
 
       parser[HTTPParser.kOnExecute] = () => {
         console.log("kOnExecute");
       }
 
-      parser[HTTPParser.kOnMessageComplete] = function (a, b, c) {
+      parser[HTTPParser.kOnMessageComplete] = function () {
+          app(req, res);
           console.log("kOnMessageComplete");
       };
 
