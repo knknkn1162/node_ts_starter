@@ -157,9 +157,11 @@ const server = createServer((req, res) => {
   console.log("\n\nstart response");
   if (req.url.pathname === "/") {
     switch(req.method) {
+      // try `curl http://localhost:5000?msg=hello`
       case "GET":
         res(200, { "Content-Type": "text/plain" }, "Hello World: " + req.url.query["msg"] + "\n");
         break;
+      // try curl -sS -XPOST --data "name=sample"  http://localhost:5000
       case "POST":
         if(req.headers["content-type"] === FORM_URLENCODED) {
           const h = queryParse(req.body.toString());
