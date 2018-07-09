@@ -161,7 +161,10 @@ const server = createServer((req, res) => {
         res(200, { "Content-Type": "text/plain" }, "Hello World: " + req.url.query["msg"] + "\n");
         break;
       case "POST":
-        res(200, { "Content-Type": "text/plain"}, "got it: " + req.body + "\n");
+        if(req.headers["content-type"] === FORM_URLENCODED) {
+          const h = queryParse(req.body.toString());
+          res(200, { "Content-Type": "text/plain"}, "got it: " + h["name"] + "\n");
+        }
         break;
       default:
         res(404, {}, "not found");
