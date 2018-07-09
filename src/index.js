@@ -115,10 +115,7 @@ function createServer(app) {
         parser.finish();
       });
       
-      parser[HTTPParser.kOnBody] = function (buf, start, len) {
-          req.body.emit("data", buf.slice(start, len));
-          console.log("kOnBody end")
-      };
+      parser[HTTPParser.kOnBody] = (buf, start, len) => {};
 
       parser[HTTPParser.kOnMessageComplete] = function () {
           req.body.emit("end");
