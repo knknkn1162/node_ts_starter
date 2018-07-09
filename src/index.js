@@ -2,17 +2,7 @@ const net = require('net');
 const HTTPParser = process.binding("http_parser").HTTPParser;
 const Stream = require('stream').Stream;
 const urlParse = require('url').parse;
-var METHODS = {
-  0: "DELETE", 
-  1: "GET", 
-  2: "HEAD", 
-  3: "POST", 
-  4: "PUT", 
-  5: "CONNECT",
-  6: "OPTIONS", 
-  7: "TRACE",
-  28: "PATCH",
-};
+var METHODS = ["DELETE", "GET", "HEAD", "POST", "PUT", "CONNECT", "OPTIONS", "TRACE"];
 var STATUS_CODES = {
   '100': 'Continue',
   '101': 'Switching Protocols',
