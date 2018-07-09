@@ -131,7 +131,8 @@ function createServer(app) {
           req.method = METHODS[method];
           req.body = new Stream();
           req.body.readable = true;
-          req.url = urlParse(url);
+          // support query to be hash
+          req.url = urlParse(url, true);
           req.shouldKeepAlive = shouldKeepAlive;
           req.headers = {}
           for (var i = 0, l = headers.length; i < l; i += 2) {
@@ -147,10 +148,10 @@ function createServer(app) {
 
 const server = createServer((req, res) => {
   console.log("\n\nstart response");
-  if (req.url.path === "/") {
+  if (req.url.pathname === "/") {
     switch(req.method) {
       case "GET":
-        res(200, { "Content-Type": "text/plain" }, "Hello World\n");
+        res(200, { "Content-Type": "text/plain" }, "Hello World: " + req.url.query["msg"] + "\n");
         break;
       case "POST":
         res(200, { "Content-Type": "text/plain"}, "got it");
