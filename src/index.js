@@ -115,22 +115,29 @@ function createServer(app) {
       });
 
       conn.on("end", function () {
+        console.log("conn end")
         parser.finish();
       });
       
-      parser[HTTPParser.kOnBody] = (buf, start, len) => {};
+      // See https://blog.websecurify.com/2017/03/http-pcap-in-node.html
+      parser[HTTPParser.kOnBody] = (buf, start, len) => {
+        console.log("kOnBody");
+        console.log("buffer: " + buf.slice(start, start+len).toString());
+        req.body = buf.slice(start, start+len);
+        app(req, res);
+      };
 
-      parser[HTTPParser.kOnMessageComplete] = function () {
-          req.body.emit("end");
-          console.log("kOnMessageComplete end")
+      parser[HTTPParser.kOnExecute] = () => {
+        console.log("kOnExecute");
+      }
+
+      parser[HTTPParser.kOnMessageComplete] = function (a, b, c) {
+          console.log("kOnMessageComplete");
       };
 
       parser[HTTPParser.kOnHeadersComplete] = function(_versionMajor, _versionMinor, headers, method,
           url, _statusCode, _statusMessage, _upgrade, shouldKeepAlive) {
-          /* input request */
           req.method = METHODS[method];
-          req.body = new Stream();
-          req.body.readable = true;
           // support query to be hash
           req.url = urlParse(url, true);
           req.shouldKeepAlive = shouldKeepAlive;
@@ -138,8 +145,6 @@ function createServer(app) {
           for (var i = 0, l = headers.length; i < l; i += 2) {
             req.headers[headers[i].toLowerCase()] = headers[i + 1];
           }
-          console.log(req);
-          app(req, res);
       };
       console.log('client connected');
 
@@ -154,7 +159,7 @@ const server = createServer((req, res) => {
         res(200, { "Content-Type": "text/plain" }, "Hello World: " + req.url.query["msg"] + "\n");
         break;
       case "POST":
-        res(200, { "Content-Type": "text/plain"}, "got it");
+        res(200, { "Content-Type": "text/plain"}, "got it: " + req.body + "\n");
         break;
       default:
         res(404, {}, "not found");
