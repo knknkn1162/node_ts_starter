@@ -2,8 +2,10 @@ const net = require('net');
 const HTTPParser = process.binding("http_parser").HTTPParser;
 const Stream = require('stream').Stream;
 const urlParse = require('url').parse;
+const queryParse = require('querystring').parse
 
 // constants
+const FORM_URLENCODED = 'application/x-www-form-urlencoded';
 const METHODS = ["DELETE", "GET", "HEAD", "POST", "PUT", "CONNECT", "OPTIONS", "TRACE"];
 const STATUS_CODES = {
   '100': 'Continue',
