@@ -62,7 +62,7 @@ const STATUS_CODES = {
   '510': 'Not Extended'                // RFC 2774
 };
 
-function createServer(app) {
+function createServer(callback) {
   return net.createServer(conn => {
       /*
       { [Function: HTTPParser]
@@ -133,7 +133,7 @@ function createServer(app) {
       }
 
       parser[HTTPParser.kOnMessageComplete] = function () {
-          app(req, res);
+          callback(req, res);
           console.log("kOnMessageComplete");
       };
 
