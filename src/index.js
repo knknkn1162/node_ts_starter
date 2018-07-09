@@ -62,6 +62,17 @@ const STATUS_CODES = {
 
 function createServer(app) {
   return net.createServer(conn => {
+      /*
+      { [Function: HTTPParser]
+        REQUEST: 0,
+        RESPONSE: 1,
+        kOnHeaders: 0,
+        kOnHeadersComplete: 1,
+        kOnBody: 2,
+        kOnMessageComplete: 3,
+        kOnExecute: 4
+      }
+      */
       var parser = new HTTPParser(HTTPParser.REQUEST);
       var req = new Object();
 
