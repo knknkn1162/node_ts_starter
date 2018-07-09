@@ -61,7 +61,7 @@ const STATUS_CODES = {
 };
 
 function createServer(app) {
-  return net.createServer((conn) => {
+  return net.createServer(conn => {
       var parser = new HTTPParser(HTTPParser.REQUEST);
       var req = new Object();
 
