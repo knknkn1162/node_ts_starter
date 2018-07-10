@@ -159,7 +159,7 @@ const server = createServer((req, res) => {
     switch(req.method) {
       // try `curl http://localhost:5000?msg=hello`
       case "GET":
-        res(200, { "Content-Type": "text/plain" }, "Hello World: " + req.url.query["msg"] + "\n");
+        res(200, { "Content-Type": "text/plain" }, "Hello World: " + (req.url.query["msg"] || "Nothing") + "\n");
         break;
       // try curl -sS -XPOST --data "name=sample"  http://localhost:5000
       case "POST":
