@@ -76,13 +76,13 @@ function createServer(callback) {
       }
       */
       var parser = new HTTPParser(HTTPParser.REQUEST);
-      var req = new Object();
+      var request = new Object();
 
       // require parser & conn
-      const res = (statusCode, headers, body) => {
+      const response = (statusCode, headers, body) => {
         /* configure headers */
         headers["Content-Length"] = Buffer.byteLength(body);
-        if (req.shouldKeepAlive) {
+        if (request.shouldKeepAlive) {
           headers["Connection"] = "keep-alive"
         }
 
@@ -98,7 +98,7 @@ function createServer(callback) {
         conn.write(content);
         
 
-        if (req.shouldKeepAlive) {
+        if (request.shouldKeepAlive) {
           parser.reinitialize(HTTPParser.REQUEST);
         }
         else {
@@ -125,7 +125,7 @@ function createServer(callback) {
       parser[HTTPParser.kOnBody] = (buf, start, len) => {
         console.log("kOnBody");
         console.log("buffer: " + buf.slice(start, start+len).toString());
-        req.body = buf.slice(start, start+len);
+        request.body = buf.slice(start, start+len);
       };
 
       parser[HTTPParser.kOnExecute] = () => {
@@ -133,19 +133,19 @@ function createServer(callback) {
       }
 
       parser[HTTPParser.kOnMessageComplete] = function () {
-          callback(req, res);
+          callback(request, response);
           console.log("kOnMessageComplete");
       };
 
       parser[HTTPParser.kOnHeadersComplete] = function(_versionMajor, _versionMinor, headers, method,
           url, _statusCode, _statusMessage, _upgrade, shouldKeepAlive) {
-          req.method = METHODS[method];
+          request.method = METHODS[method];
           // support query to be hash
-          req.url = urlParse(url, true);
-          req.shouldKeepAlive = shouldKeepAlive;
-          req.headers = {}
+          request.url = urlParse(url, true);
+          request.shouldKeepAlive = shouldKeepAlive;
+          request.headers = {}
           for (var i = 0, l = headers.length; i < l; i += 2) {
-            req.headers[headers[i].toLowerCase()] = headers[i + 1];
+            request.headers[headers[i].toLowerCase()] = headers[i + 1];
           }
       };
       console.log('client connected');
