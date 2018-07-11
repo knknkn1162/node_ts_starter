@@ -5,7 +5,8 @@ app.listen(5000);
 
 function handler (req, res) {
   console.log(req.url);
-  absPath = "public" + (req.url === "/" ? "/index.html" : req.url);
+  url = req.url[req.url.length-1] === "/" ? req.url + "index.html" : req.url;
+  absPath = "public" + url;
   fs.exists(absPath, exists => {
     if(!exists) {
       send404(res);
