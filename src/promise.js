@@ -47,25 +47,26 @@ const promiseTimeout = function(ms, promise){
 };
 
 const promiseExec = filePath => new Promise((resolve, reject) => {
-fs.readFile(filePath, (err, data) => {
-    if (err) return reject(err.message);
-    resolve(data.byteLength);
-});
-});
-  
-  io.on('connection', (socket) => {
-    console.log("connection start");
-  
-    socket.on("request", data => {
-      promiseTimeout(10, promiseExec(data["req"])).then(
-        res => {
-          console.log("res: " + res);
-          socket.emit("response", {"suggest": res + " bytes"})
-        },
-        err => {
-          console.log("err: " + err);
-          socket.emit("response", {"suggest": err})
-        }
-      );
+    // async function
+    fs.readFile(filePath, (err, data) => {
+        if (err) return reject(err.message);
+        resolve(data.byteLength);
     });
-  });
+});
+  
+io.on('connection', (socket) => {
+    console.log("connection start");
+
+    socket.on("request", data => {
+        promiseTimeout(10, promiseExec(data["req"])).then(
+            res => {
+                console.log("res: " + res);
+                socket.emit("response", {"suggest": res + " bytes"})
+            },
+            err => {
+                console.log("err: " + err);
+                socket.emit("response", {"suggest": err})
+            }
+        );
+    });
+});
