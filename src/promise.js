@@ -16,7 +16,7 @@ function handler (req, res) {
       mimetype = req.url.endsWith(".js") ? "text/javascript" : "text/html";
       fs.readFile(absPath, (err, data) => err ? send404(res) : render(res, mimetype, data));
     });
-  }
+}
   
   function render(res, mimetype, fileContents) {
     res.writeHead(200, {"content-type": mimetype});
