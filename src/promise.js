@@ -3,7 +3,7 @@ var io = require('socket.io')(app);
 var fs = require('fs');
 app.listen(5000);
 
-
+// http handler
 function handler (req, res) {
     console.log(req.url);
     url = req.url[req.url.length-1] === "/" ? req.url + "index.html" : req.url;
@@ -29,7 +29,8 @@ function handler (req, res) {
   }
   
 
-const promiseTimeout = function(ms, promise){
+
+const promiseOrTimeout = function(ms, promise){
     // Create a promise that rejects in <ms> milliseconds
     let timeout = new Promise((resolve, reject) => {
       setTimeout(() => reject('Timed out in '+ ms + 'ms.'), ms);
@@ -52,7 +53,7 @@ const promiseExec = filePath => new Promise((resolve, reject) => {
 
 function execOrTimeout(ms, str, callback) {
     // The statement then(fulfill, reject) is also permitted
-    return promiseTimeout(ms, promiseExec(str)).then(
+    return promiseOrTimeout(ms, promiseExec(str)).then(
         res => {
             console.log("res: " + res);
             return {"suggest": res + " bytes"};
