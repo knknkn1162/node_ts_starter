@@ -7,12 +7,8 @@ const initialize = () => {
 
 const processUserInput = socket => {
   const msg = $("#send-message").val();
-  socket.emit("request", { req: msg });
+  socket.emit("request", { "data": msg });
   $("#notification").text("wait...");
-  socket.on("response", data => {
-    console.log(data["suggest"]);
-    $("#notification").text("message: " + data["suggest"]);
-  });
 };
 
 /*
@@ -29,5 +25,11 @@ $(document).ready(() => {
     processUserInput(socket);
     initialize();
     return false;
+  });
+
+  socket.on("response", response => {
+    console.log(response);
+    const msg = response["error"] ? "error: " + response["error"] : "message: " + response["data"];
+    $("#notification").text(msg);
   });
 });

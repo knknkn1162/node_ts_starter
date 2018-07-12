@@ -51,9 +51,10 @@ const promiseExec = filePath => new Promise((resolve, reject) => {
     });
 });
 
-function execOrTimeout(ms, str, callback) {
+/*
+function execOrTimeout(ms, input, callback) {
     // The statement then(fulfill, reject) is also permitted
-    return promiseOrTimeout(ms, promiseExec(str)).then(
+    return promiseOrTimeout(ms, promiseExec(input)).then(
         res => {
             console.log("res: " + res);
             return {"suggest": res + " bytes"};
@@ -64,6 +65,18 @@ function execOrTimeout(ms, str, callback) {
             return {"suggest": err}
         }
     ).then(callback);
+}
+*/
+
+async function execOrTimeout(ms, input, callback) {
+    let msg;
+    try {
+        msg = {"suggest": await promiseOrTimeout(ms, promiseExec(input))};
+    }
+    catch (err) {
+        msg = {"suggest": err};
+    }
+    callback(msg);
 }
   
 io.on('connection', (socket) => {
