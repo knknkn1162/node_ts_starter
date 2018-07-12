@@ -82,7 +82,7 @@ async function execOrTimeout(ms, input, callback) {
     try {
         // if reject, jump catch statement.
         const res = await promiseOrTimeout(ms, promiseExec(input));
-        msg = {"data": res};
+        msg = {"data": res, "file": input};
     }
     catch (err) {
         msg = {"error": err};

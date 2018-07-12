@@ -23,7 +23,12 @@ $(document).ready(() => {
 
   socket.on("response", response => {
     console.log(response);
-    const msg = response["error"] ? "error: " + response["error"] : "message: " + response["data"];
+    var msg;
+    if (response.error) {
+      msg = "error: " + response.error;
+    } else {
+      msg = "file: " + response.file + ", " + "message: " + response.data;
+    }
     $("#notification").text(msg);
   });
 });
