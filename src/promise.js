@@ -34,7 +34,6 @@ const promiseTimeout = function(ms, promise){
     let timeout = new Promise((resolve, reject) => {
       //let id = 
       let id = setTimeout(() => {
-        clearTimeout(id);
         reject('Timed out in '+ ms + 'ms.')
       }, ms);
     })
@@ -53,20 +52,25 @@ const promiseExec = filePath => new Promise((resolve, reject) => {
         resolve(data.byteLength);
     });
 });
+
+function execOrTimeout(ms, str, callback) {
+    // The statement then(fulfill, reject) is also permitted
+    return promiseTimeout(ms, promiseExec(str)).then(
+        res => {
+            console.log("res: " + res);
+            return {"suggest": res + " bytes"};
+        }
+    ).catch(
+        err => {
+            console.log("err: " + err);
+            return {"suggest": err}
+        }
+    ).then(callback);
+}
   
 io.on('connection', (socket) => {
     console.log("connection start");
-
     socket.on("request", data => {
-        promiseTimeout(10, promiseExec(data["req"])).then(
-            res => {
-                console.log("res: " + res);
-                socket.emit("response", {"suggest": res + " bytes"})
-            },
-            err => {
-                console.log("err: " + err);
-                socket.emit("response", {"suggest": err})
-            }
-        );
+        execOrTimeout(10, data["req"], msg => socket.emit("response", msg));
     });
 });
