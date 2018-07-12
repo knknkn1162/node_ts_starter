@@ -11,12 +11,6 @@ const processUserInput = socket => {
   $("#notification").text("wait...");
 };
 
-/*
-socket.on('hello', data => {
-  console.log(data);
-  socket.emit('result', { me: 'nice! ' + data["hello"] });
-});
-*/
 
 $(document).ready(() => {
   initialize();

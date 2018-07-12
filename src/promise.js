@@ -18,21 +18,19 @@ function handler (req, res) {
     });
 }
   
-  function render(res, mimetype, fileContents) {
+function render(res, mimetype, fileContents) {
     res.writeHead(200, {"content-type": mimetype});
     res.end(fileContents);
-  }
+}
   
-  function send404(res) {
+function send404(res) {
     res.writeHead(404, {'Content-Type': 'text/plain'});
     res.end();
-  }
-  
-
+}
 
 const promiseOrTimeout = function(ms, promise){
     // Create a promise that rejects in <ms> milliseconds
-    let timeout = new Promise((resolve, reject) => {
+    const timeout = new Promise((_resolve, reject) => {
       setTimeout(() => reject('Timed out in '+ ms + 'ms.'), ms);
     });
   
@@ -68,20 +66,36 @@ function execOrTimeout(ms, input, callback) {
 }
 */
 
+/*
+function execOrTimeout(filePath, reject, resolve) {
+    setTimeout(() => {
+        fs.readFile(filePath, (err, data) => {
+            if (err) return reject(err.message);
+            resolve(data.byteLength);
+        });
+    }, 100);
+}
+*/
+
 async function execOrTimeout(ms, input, callback) {
     let msg;
     try {
-        msg = {"suggest": await promiseOrTimeout(ms, promiseExec(input))};
+        // if reject, jump catch statement.
+        const res = await promiseOrTimeout(ms, promiseExec(input));
+        msg = {"data": res};
     }
     catch (err) {
-        msg = {"suggest": err};
+        msg = {"error": err};
+    } finally {
+        console.log(msg);
+        callback(msg);
     }
-    callback(msg);
 }
-  
+
 io.on('connection', (socket) => {
     console.log("connection start");
-    socket.on("request", data => {
-        execOrTimeout(10, data["req"], msg => socket.emit("response", msg));
+    socket.on("request", request => {
+        // 10ms or timeout
+        execOrTimeout(10, request["data"], msg => socket.emit("response", msg));
     });
 });
